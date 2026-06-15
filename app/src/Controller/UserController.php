@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,9 +17,9 @@ final class UserController extends AbstractController
 
         try {
             $user = $userService->createUser($payload);
-            return $this->json($user, 201);
+            return $this->json($user, JsonResponse::HTTP_CREATED);
         } catch(\Exception $e) {
-            return $this->json(['error' => $e->getMessage(), 422]);
+            return $this->json(['error' => $e->getMessage()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }

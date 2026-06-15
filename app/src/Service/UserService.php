@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\Service;
 
 use App\Repository\UserRepository;
@@ -19,6 +17,22 @@ class UserService {
     }
 
     public function createUser(array $payload): User {
+        $this->validatePayload($payload);
+        if($this->checkUserAlreadyExist($payload['email']) === true) {
+            throw new \Exception('invalid payload');
+        }
+
+        $user = new User();
+        $user->email = $payload['email'];
+        $user->password = $payload['password'];
+
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $user;
+    }
+
+    public function validatePayload(array $payload): bool {
         if(empty($payload)) {
             throw new \Exception('invalid payload');
         }
@@ -41,22 +55,11 @@ class UserService {
             throw new \Exception('invalid payload');
         }
 
-        if($this->checkUserAlreadyExist($payload['email']) !==  false) {
-            throw new \Exception('invalid payload');
-        }
-
-        $user = new User();
-        $user->email = $payload['email'];
-        $user->password = $payload['password'];
-
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
+        return true;
     }
 
     public function checkUserAlreadyExist(string $email): bool {
-        return empty($this->userRepository->findOneBy(['email' => $email]));
+        return empty($this->userRepository->findOneBy(['email' => $email])) === false;
     }
 }
 
