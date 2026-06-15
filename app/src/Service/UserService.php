@@ -1,15 +1,20 @@
 <?php
+
+
+
 namespace App\Service;
 
 use App\Repository\UserRepository;
-use Couchbase\User;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 
 class UserService {
 
+    private UserRepository $userRepository;
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $em) {
+        $this->userRepository = $userRepository;
         $this->em = $em;
     }
 
@@ -51,7 +56,7 @@ class UserService {
     }
 
     public function checkUserAlreadyExist(string $email): bool {
-        return empty($this->em->getRepository(UserRepository::class)->findOneBy(['email' => $email]));
+        return empty($this->userRepository->findOneBy(['email' => $email]));
     }
 }
 
