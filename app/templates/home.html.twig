@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block body %}
+<h1>Hello world</h1>
+
+<ul>
+    {% for item in fruits %}
+        <li>{{item}}</li>
+    {% endfor %}
+</ul>
+
+{% if number % 2 == 0 %}
+    <p>{{number}} est pair</p>
+{% else %}
+    <p>{{number}} est impair</p>
+{% endif %}
+
+{% endblock %}

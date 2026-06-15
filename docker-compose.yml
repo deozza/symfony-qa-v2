@@ -1,0 +1,29 @@
+services:
+     playgrounds-symfony:
+          container_name: playgrounds-symfony
+          build:
+               context: .
+               dockerfile: Dockerfile
+          volumes: 
+               - ./app:/var/www/html
+               - ./logs:/var/log/apache2/
+          ports:
+               - 8080:80
+               - 8888:8000
+     playgrounds-symfony-mysql:
+          image: mysql:latest
+          container_name: playgrounds-symfony-mysql
+          restart: unless-stopped
+          environment:
+            MYSQL_DATABASE: 'db'
+            # So you don't have to use root, but you can if you like
+            MYSQL_USER: 'user'
+            # You can use whatever password you like
+            MYSQL_PASSWORD: 'password'
+            # Password for root access
+            MYSQL_ROOT_PASSWORD: 'password'
+          ports:
+            - '3306:3306'
+          volumes:
+            - ./mysql:/var/lib/mysql
+     
