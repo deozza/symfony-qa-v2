@@ -1,7 +1,4 @@
 <?php
-
-
-
 namespace App\Service;
 
 use App\Repository\UserRepository;
@@ -31,7 +28,7 @@ class UserService {
 
         foreach($payload as $key => $value) {
             if(empty($value)) {
-            throw new \Exception('invalid payload');
+                throw new \Exception('invalid payload');
             }
         }
 
